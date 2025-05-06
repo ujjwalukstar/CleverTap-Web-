@@ -1,68 +1,51 @@
-self.addEventListener("pushsubscriptionchange", (event) => {
-  console.log("[CleverTap Service Worker] Push Subscription Change", event)
+self.addEventListener('install', function(event) {
+  console.log('[CleverTap Service Worker] Installed');
+  event.waitUntil(self.skipWaiting());
+});
 
-  // Handle subscription renewal
-  event.waitUntil(
-    self.registration.pushManager.subscribe({ userVisibleOnly: true }).then((subscription) => {
-      console.log("[CleverTap Service Worker] New subscription:", subscription)
-      // Here you would typically send the new subscription to your server
-      // but CleverTap handles this automatically
-    }),
-  )
-})
+self.addEventListener('activate', function(event) {
+  console.log('[CleverTap Service Worker] Activated');
+  event.waitUntil(self.clients.claim());
+});
 
-self.addEventListener("install", (event) => {
-  console.log("[CleverTap Service Worker] Installed")
-  event.waitUntil(self.skipWaiting())
-})
-
-self.addEventListener("activate", (event) => {
-  console.log("[CleverTap Service Worker] Activated")
-  event.waitUntil(self.clients.claim())
-})
-
-self.addEventListener("push", (event) => {
-  console.log("[CleverTap Service Worker] Push Received:", event)
-  let data = {}
-
+self.addEventListener('push', function(event) {
+  console.log('[CleverTap Service Worker] Push Received:', event);
+  let data = {};
   if (event.data) {
     try {
-      data = event.data.json()
-      console.log("[CleverTap Service Worker] Push data:", data)
+      data = event.data.json();
     } catch (e) {
-      console.error("[CleverTap Service Worker] Error parsing push data:", e)
-      data = { title: "CleverTap Notification", body: "You have a new notification!" }
+      console.error('[CleverTap Service Worker] Error parsing push data:', e);
+      data = { title: 'CleverTap Notification', body: 'You have a new notification!' };
     }
   }
 
-  const title = data.title || "CleverTap Notification"
+  const title = data.title || 'CleverTap Notification';
   const options = {
-    body: data.body || "You have a new notification!",
-    icon: "/icon.png",
-    badge: "/badge.png",
-    data: data,
-    // Add required tag for authentication
-    tag: "clevertap-notification",
-    // Ensure notifications require interaction
-    requireInteraction: true,
-  }
+    body: data.body || 'You have a new notification!',
+    icon: '/icon.png', // Optional: Add an icon to your repository
+    badge: '/badge.png', // Optional: Add a badge to your repository
+    data: data // Include data for notification click handling
+  };
 
-  event.waitUntil(self.registration.showNotification(title, options))
-})
-
-self.addEventListener("notificationclick", (event) => {
-  console.log("[CleverTap Service Worker] Notification click Received:", event)
-  event.notification.close()
-
-  const url = event.notification.data && event.notification.data.url ? event.notification.data.url : "/"
   event.waitUntil(
-    clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
+    self.registration.showNotification(title, options)
+  );
+});
+
+self.addEventListener('notificationclick', function(event) {
+  console.log('[CleverTap Service Worker] Notification click Received:', event);
+  event.notification.close();
+
+  const url = event.notification.data && event.notification.data.url ? event.notification.data.url : 'https://clevertap-five.vercel.app';
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(clientList) {
       for (let i = 0; i < clientList.length; i++) {
-        if (clientList[i].url === url && "focus" in clientList[i]) {
-          return clientList[i].focus()
+        if (clientList[i].url === url && 'focus' in clientList[i]) {
+          return clientList[i].focus();
         }
       }
-      return clients.openWindow(url)
-    }),
-  )
-})
+      return clients.openWindow(url);
+    })
+  );
+});

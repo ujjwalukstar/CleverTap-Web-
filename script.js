@@ -12,7 +12,14 @@ function initializeServiceWorker() {
       .register("/clevertap_sw.js")
       .then((registration) => {
         console.log("Service Worker registered with scope:", registration.scope)
-        return registration
+        // Initialize CleverTap notifications after service worker is registered
+        if (typeof clevertap !== "undefined" && clevertap.notifications) {
+          clevertap.notifications.push({
+            serviceWorker: registration,
+            scope: registration.scope,
+          })
+          console.log("CleverTap notifications initialized with service worker")
+        }
       })
       .catch((error) => {
         console.error("Service Worker registration failed:", error)
@@ -174,41 +181,18 @@ function askForPush() {
     return
   }
 
-  // Register service worker if not already registered
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker
-      .register("/clevertap_sw.js")
-      .then((registration) => {
-        console.log("Service Worker registered with scope:", registration.scope)
-
-        // Set up web push configuration with proper authentication
-        clevertap.notifications.push({
-          titleText: "Would you like to receive Push Notifications?",
-          bodyText: "We promise to only send you relevant content and give you updates on your transactions",
-          okButtonText: "Sign me up!",
-          rejectButtonText: "No thanks",
-          askAgainTimeInSeconds: 5,
-          okButtonColor: "#f28046",
-          serviceWorker: registration,
-          scope: registration.scope,
-          // Add Safari support
-          safari: {
-            // Required for Safari push
-            webPushURLs: ["https://clevertap-five.vercel.app"],
-          },
-          // Add required authentication settings
-          requireInteraction: true,
-          skipDialog: false,
-        })
-
-        console.log("Push notification permission requested with proper authentication")
-      })
-      .catch((error) => {
-        console.error("Service Worker registration failed:", error)
-        alert("Error: Failed to register service worker. Check console for details.")
-      })
-  } else {
-    console.warn("Service workers are not supported in this browser")
-    alert("Push notifications are not supported in this browser. Please try Chrome or Firefox.")
+  try {
+    clevertap.notifications.push({
+      titleText: "Would you like to receive Push Notifications?",
+      bodyText: "We promise to only send you relevant content and give you updates on your transactions",
+      okButtonText: "Sign me up!",
+      rejectButtonText: "No thanks",
+      askAgainTimeInSeconds: 5,
+      okButtonColor: "#f28046",
+    })
+    console.log("Push notification permission requested")
+  } catch (error) {
+    console.error("Error requesting push notification permission:", error)
+    alert("Error: Failed to request push notifications. Check console for details.")
   }
 }
