@@ -1,40 +1,91 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>CleverTap Integration</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up with CleverTap</title>
+    <link rel="stylesheet" href="styles.css" />
+    <!-- CleverTap SDK Integration -->
+    <script type="text/javascript">
+      var clevertap = {
+        event: [],
+        profile: [],
+        account: [],
+        onUserLogin: [],
+        notifications: [],
+        privacy: [],
+      };
+      // Initialize the CleverTap account
+      clevertap.account.push({ id: "Z44-Z4K-K65Z" });
+      clevertap.privacy.push({ optOut: false });
+      clevertap.privacy.push({ useIP: false });
+      (function () {
+        var wzrk = document.createElement("script");
+        wzrk.type = "text/javascript";
+        wzrk.async = true;
+        wzrk.src =
+          ("https:" == document.location.protocol
+            ? "https://d2r1yp2w7bby2u.cloudfront.net"
+            : "http://static.clevertap.com") + "/js/clevertap.min.js";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(wzrk, s);
+        wzrk.onload = function () {
+          console.log("CleverTap SDK loaded successfully:", clevertap);
+          // Initialize service worker after SDK loads
+          initializeServiceWorker();
+        };
+        wzrk.onerror = function () {
+          console.error("Failed to load CleverTap SDK");
+        };
+      })();
+    </script>
+  </head>
+  <body>
     <div class="container">
-        <h1>User Registration</h1>
-        <form id="signupForm">
-            <div class="form-group">
-                <label>Name</label>
-                <input type="text" id="name" required>
-                <div id="nameError" class="error">Please enter a valid name</div>
-            </div>
-            <div class="form-group">
-                <label>Email Address</label>
-                <input type="email" id="email" required>
-                <div id="emailError" class="error">Please enter a valid email</div>
-            </div>
-            <div class="form-group">
-                <label>Phone Number</label>
-                <input type="tel" id="phone" required>
-                <div id="phoneError" class="error">Please enter a valid phone number</div>
-            </div>
-            <div class="form-group">
-                <label>Date of Birth</label>
-                <input type="date" id="dob" required>
-                <div id="dobError" class="error">Please select a valid date</div>
-            </div>
-            
-            <button type="button" id="login" class="login-btn">Login</button>
-            <button type="button" id="profilePush" class="profile-btn">Profile Push</button>
-            <button type="button" id="raiseEvent" class="event-btn">Raise Event</button>
-            <button type="button" id="askPush" class="push-btn">Ask For Push</button>
-        </form>
+      <h1>Welcome to CleverTap!</h1>
+      <form id="signupForm">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" placeholder="Enter your name" required />
+          <div id="nameError" class="error">Please enter a valid name</div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="Enter your email"
+            required
+          />
+          <div id="emailError" class="error">Please enter a valid email</div>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" placeholder="+919934567890" required />
+          <div id="phoneError" class="error">
+            Please enter a valid phone number
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="dob">Date of Birth</label>
+          <input type="date" id="dob" required />
+          <div id="dobError" class="error">Please select a valid date</div>
+        </div>
+        <button type="button" class="login-btn" onclick="handleLogin()">
+          Login
+        </button>
+        <button type="button" class="profile-btn" onclick="handleProfilePush()">
+          Profile Push
+        </button>
+        <button type="button" class="event-btn" onclick="handleEvent()">
+          Raise Event
+        </button>
+        <button type="button" class="push-btn" onclick="askForPush()">
+          Ask For Push
+        </button>
+      </form>
     </div>
+
     <script src="script.js"></script>
-</body>
+  </body>
 </html>

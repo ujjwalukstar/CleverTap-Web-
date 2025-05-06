@@ -14,29 +14,7 @@ self.addEventListener('push', function(event) {
   if (event.data) {
     try {
       data = event.data.json();
-    } catch (e) {aself.addEventListener('push', function(event) {
-      console.log('[CleverTap Service Worker] Push Received:', event);
-      let data = {};
-      
-      try {
-          data = event.data.json();
-      } catch(e) {
-          data = { 
-              title: 'New Notification', 
-              body: 'You have a new message!',
-              icon: '/icon.png'
-          };
-      }
-  
-      event.waitUntil(
-          self.registration.showNotification(data.title, {
-              body: data.body,
-              icon: data.icon || '/icon.png',
-              data: data
-          })
-      );
-  });
-  
+    } catch (e) {
       console.error('[CleverTap Service Worker] Error parsing push data:', e);
       data = { title: 'CleverTap Notification', body: 'You have a new notification!' };
     }
