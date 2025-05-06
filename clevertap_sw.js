@@ -1,3 +1,16 @@
+self.addEventListener("pushsubscriptionchange", (event) => {
+  console.log("[CleverTap Service Worker] Push Subscription Change", event)
+
+  // Handle subscription renewal
+  event.waitUntil(
+    self.registration.pushManager.subscribe({ userVisibleOnly: true }).then((subscription) => {
+      console.log("[CleverTap Service Worker] New subscription:", subscription)
+      // Here you would typically send the new subscription to your server
+      // but CleverTap handles this automatically
+    }),
+  )
+})
+
 self.addEventListener("install", (event) => {
   console.log("[CleverTap Service Worker] Installed")
   event.waitUntil(self.skipWaiting())
@@ -11,9 +24,11 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("push", (event) => {
   console.log("[CleverTap Service Worker] Push Received:", event)
   let data = {}
+
   if (event.data) {
     try {
       data = event.data.json()
+      console.log("[CleverTap Service Worker] Push data:", data)
     } catch (e) {
       console.error("[CleverTap Service Worker] Error parsing push data:", e)
       data = { title: "CleverTap Notification", body: "You have a new notification!" }
@@ -23,9 +38,13 @@ self.addEventListener("push", (event) => {
   const title = data.title || "CleverTap Notification"
   const options = {
     body: data.body || "You have a new notification!",
-    icon: "/icon.png", // Optional: Add an icon to your repository
-    badge: "/badge.png", // Optional: Add a badge to your repository
-    data: data, // Include data for notification click handling
+    icon: "/icon.png",
+    badge: "/badge.png",
+    data: data,
+    // Add required tag for authentication
+    tag: "clevertap-notification",
+    // Ensure notifications require interaction
+    requireInteraction: true,
   }
 
   event.waitUntil(self.registration.showNotification(title, options))

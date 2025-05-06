@@ -86,5 +86,29 @@
     </div>
 
     <script src="script.js"></script>
+    <script>
+  // Initialize CleverTap web push with proper configuration
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof clevertap !== 'undefined') {
+      // Set up CleverTap web push configuration
+      clevertap.notifications.config({
+        default: {
+          // Default notification settings
+          requireInteraction: true,
+          // Set the default notification icon
+          icon: '/icon.png'
+        },
+        // Force HTTPS for all communication
+        forceHTTPS: true,
+        // Set the default service worker path
+        serviceWorkerPath: '/clevertap_sw.js',
+        // Enable debugging
+        debug: true
+      });
+      
+      console.log('CleverTap web push configured');
+    }
+  });
+</script>
   </body>
 </html>

@@ -181,7 +181,7 @@ function askForPush() {
       .then((registration) => {
         console.log("Service Worker registered with scope:", registration.scope)
 
-        // Now call the CleverTap notifications API with all required parameters
+        // Set up web push configuration with proper authentication
         clevertap.notifications.push({
           titleText: "Would you like to receive Push Notifications?",
           bodyText: "We promise to only send you relevant content and give you updates on your transactions",
@@ -191,9 +191,17 @@ function askForPush() {
           okButtonColor: "#f28046",
           serviceWorker: registration,
           scope: registration.scope,
+          // Add Safari support
+          safari: {
+            // Required for Safari push
+            webPushURLs: ["https://clevertap-five.vercel.app"],
+          },
+          // Add required authentication settings
+          requireInteraction: true,
+          skipDialog: false,
         })
 
-        console.log("Push notification permission requested")
+        console.log("Push notification permission requested with proper authentication")
       })
       .catch((error) => {
         console.error("Service Worker registration failed:", error)
