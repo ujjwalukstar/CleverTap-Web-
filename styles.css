@@ -1,0 +1,171 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    background: #02aab0; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #00cdac, #02aab0);
+    background: linear-gradient(to right, #00cdac, #02aab0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+  }
+  
+  .container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+    font-size: 14px;
+  }
+  
+  input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+  
+  input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  }
+  
+  button {
+    width: 95%;
+    padding: 12px;
+    margin: 10px 10;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .login-btn {
+      background-image: linear-gradient(
+        to right,
+        #d31027 0%,
+        #ea384d 51%,
+        #d31027 100%
+      );
+    }
+    .login-btn {
+      margin: 10px;
+      text-align: center;
+      text-transform: uppercase;
+      transition: 0.5s;
+      background-size: 200% auto;
+      color: white;
+      box-shadow: 0 0 20px #eee;
+      border-radius: 10px;
+      display: block;
+    }
+  
+    .login-btn:hover {
+      background-position: right center;
+      color: #fff;
+      text-decoration: none;
+    }
+  
+  .profile-btn {background-image: linear-gradient(to right, #004FF9 0%, #FFF94C  51%, #004FF9  100%)}
+  .profile-btn {
+     margin: 10px;
+     text-align: center;
+     text-transform: uppercase;
+     transition: 0.5s;
+     background-size: 200% auto;
+     color: white;            
+     box-shadow: 0 0 20px #eee;
+     border-radius: 10px;
+     display: block;
+   }
+  
+   .profile-btn:hover {
+     background-position: right center;
+     color: #fff;
+     text-decoration: none;
+   }
+  
+  .event-btn {background-image: linear-gradient(to right, #00d2ff 0%, #3a7bd5  51%, #00d2ff  100%)}
+  .event-btn {
+     margin: 10px;
+     text-align: center;
+     text-transform: uppercase;
+     transition: 0.5s;
+     background-size: 200% auto;
+     color: white;            
+     box-shadow: 0 0 20px #eee;
+     border-radius: 10px;
+     display: block;
+   }
+  
+   .event-btn:hover {
+     background-position: right center;
+     color: #fff;
+     text-decoration: none;
+   }
+  
+  .push-btn {background-image: linear-gradient(to right, #00C9FF 0%, #92FE9D  51%, #00C9FF  100%)}
+  .push-btn {
+     margin: 10px;
+     text-align: center;
+     text-transform: uppercase;
+     transition: 0.5s;
+     background-size: 200% auto;
+     color: white;            
+     box-shadow: 0 0 20px #eee;
+     border-radius: 10px;
+     display: block;
+   }
+  
+   .push-btn:hover {
+     background-position: right center;
+     color: #fff;
+     text-decoration: none;
+   }
+  
+  .error {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 5px;
+    display: none;
+  }
+  
+  @media (max-width: 500px) {
+    .container {
+      padding: 20px;
+    }
+  
+    h1 {
+      font-size: 20px;
+    }
+  
+    button {
+      font-size: 14px;
+    }
+  }
+  
