@@ -196,3 +196,34 @@ function askForPush() {
     alert("Error: Failed to request push notifications. Check console for details.")
   }
 }
+// Initialize CleverTap properly
+window.clevertap = {event:[], profile:[], account:[], onUserLogin:[], notifications:[], privacy:[]};
+clevertap.account.push({'id': 'Z44-Z4K-K65Z'});
+
+// Load CleverTap SDK
+var wzrk = document.createElement('script');
+wzrk.type = 'text/javascript';
+wzrk.async = true;
+wzrk.src = ('https:' == document.location.protocol ? 'https://d2r1yp2w7bby2u.cloudfront.net' : 'http://static.clevertap.com') + '/js/a.js';
+var s = document.getElementsByTagName('script')[0];
+s.parentNode.insertBefore(wzrk, s);
+
+// Service Worker Registration
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/clevertap_sw.js')
+        .then(registration => {
+            clevertap.notifications.push({
+                "apnsWebPushId": "web.com.yourdomain",
+                "apnsWebPushServiceUrl": "https://push.service.com"
+            });
+        });
+}
+
+// Event Listeners
+document.getElementById('login').addEventListener('click', handleLogin);
+document.getElementById('profilePush').addEventListener('click', handleProfilePush);
+document.getElementById('raiseEvent').addEventListener('click', handleEvent);
+document.getElementById('askPush').addEventListener('click', askForPush);
+
+// Rest of your existing functions (validateForm, handleLogin, etc.) remain unchanged
+// Keep all your existing validation and handler functions as they are correct
