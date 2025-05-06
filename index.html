@@ -5,6 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign Up with CleverTap</title>
     <link rel="stylesheet" href="styles.css" />
+    <!-- CleverTap SDK Integration -->
+    <script type="text/javascript">
+      var clevertap = {
+        event: [],
+        profile: [],
+        account: [],
+        onUserLogin: [],
+        notifications: [],
+        privacy: [],
+      };
+      // Initialize the CleverTap account
+      clevertap.account.push({ id: "Z44-Z4K-K65Z" });
+      clevertap.privacy.push({ optOut: false });
+      clevertap.privacy.push({ useIP: false });
+      (function () {
+        var wzrk = document.createElement("script");
+        wzrk.type = "text/javascript";
+        wzrk.async = true;
+        wzrk.src =
+          ("https:" == document.location.protocol
+            ? "https://d2r1yp2w7bby2u.cloudfront.net"
+            : "http://static.clevertap.com") + "/js/clevertap.min.js";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(wzrk, s);
+        wzrk.onload = function () {
+          console.log("CleverTap SDK loaded successfully:", clevertap);
+          // Initialize service worker after SDK loads
+          initializeServiceWorker();
+        };
+        wzrk.onerror = function () {
+          console.error("Failed to load CleverTap SDK");
+        };
+      })();
+    </script>
   </head>
   <body>
     <div class="container">
@@ -51,38 +85,6 @@
         </button>
       </form>
     </div>
-
-    <!-- CleverTap SDK Integration -->
-    <script type="text/javascript">
-      var clevertap = {
-        event: [],
-        profile: [],
-        account: [],
-        onUserLogin: [],
-        notifications: [],
-        privacy: [],
-      };
-      clevertap.account.push({ id: "Z44-Z4K-K65Z" });
-      clevertap.privacy.push({ optOut: false });
-      clevertap.privacy.push({ useIP: false });
-      (function () {
-        var wzrk = document.createElement("script");
-        wzrk.type = "text/javascript";
-        wzrk.async = true;
-        wzrk.src =
-          ("https:" == document.location.protocol
-            ? "https://d2r1yp2w7bby2u.cloudfront.net"
-            : "http://static.clevertap.com") + "/js/clevertap.min.js";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(wzrk, s);
-        wzrk.onload = function () {
-          console.log("CleverTap SDK loaded successfully:", clevertap);
-        };
-        wzrk.onerror = function () {
-          console.error("Failed to load CleverTap SDK");
-        };
-      })();
-    </script>
 
     <script src="script.js"></script>
   </body>
