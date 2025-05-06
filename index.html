@@ -30,9 +30,8 @@
         var s = document.getElementsByTagName("script")[0];
         s.parentNode.insertBefore(wzrk, s);
         wzrk.onload = function () {
-          console.log("CleverTap SDK loaded successfully:", clevertap);
-          // Initialize service worker after SDK loads
-          initializeServiceWorker();
+          console.log("CleverTap SDK loaded successfully");
+          // Don't initialize service worker here - we'll do it on demand
         };
         wzrk.onerror = function () {
           console.error("Failed to load CleverTap SDK");
