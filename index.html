@@ -82,23 +82,6 @@
           console.error("Failed to load CleverTap SDK");
         };
       })();
-
-      // Register service worker for push notifications
-      if ('serviceWorker' in navigator) {
-        // Use dynamic path to handle GitHub Pages subdirectories
-        const swPath = new URL('/sw.js', window.location.origin).pathname;
-        navigator.serviceWorker.register(swPath, { scope: '/' })
-          .then(function(registration) {
-            console.log('Service Worker registered with scope:', registration.scope);
-          })
-          .catch(function(error) {
-            console.error('Service Worker registration failed:', error);
-            console.log('Service Worker path attempted:', swPath);
-          });
-      } else {
-        console.warn('Service Worker not supported in this browser');
-        alert('Push notifications are not supported in this browser');
-      }
     </script>
 
     <script src="script.js"></script>

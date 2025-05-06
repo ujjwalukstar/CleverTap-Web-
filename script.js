@@ -142,28 +142,36 @@ function handleEvent() {
 }
 
 function askForPush() {
-    if (!('PushManager' in window) || !('serviceWorker' in navigator)) {
+    // Check browser support for push notifications and service workers
+    if (!('PushManager' in window) || !('serviceWorker' in navigator) || !('showNotification' in ServiceWorkerRegistration.prototype)) {
         console.warn('Push notifications not supported in this browser');
-        alert('Push notifications are not supported in this browser');
+        alert('Push notifications are not supported in this browser. Please try Chrome or Firefox.');
         return;
     }
 
     if (typeof clevertap !== 'undefined') {
-        try {
-            clevertap.notifications.push({
-                "titleText": "Would you like to receive Push Notifications?",
-                "bodyText": "We promise to only send you relevant content and give you updates on your transactions",
-                "okButtonText": "Sign me up!",
-                "rejectButtonText": "No thanks",
-                "askAgainTimeInSeconds": 5,
-                "okButtonColor": "#f28046"
-            });
-            console.log('Push notification permission requested');
-            alert('Push permission requested!');
-        } catch (error) {
-            console.error('Error requesting push notification permission:', error);
-            alert('Error: Failed to request push notifications');
-        }
+        // Ensure service worker is ready before pushing notification
+        navigator.serviceWorker.ready.then(function(registration) {
+            console.log('Service worker ready:', registration);
+            try {
+                clevertap.notifications.push({
+                    "titleText": "Would you like to receive Push Notifications?",
+                    "bodyText": "We promise to only send you relevant content and give you updates on your transactions",
+                    "okButtonText": "Sign me up!",
+                    "rejectButtonText": "No thanks",
+                    "askAgainTimeInSeconds": 5,
+                    "okButtonColor": "#f28046"
+                });
+                console.log('Push notification permission requested');
+                alert('Push permission requested!');
+            } catch (error) {
+                console.error('Error requesting push notification permission:', error);
+                alert('Error: Failed to request push notifications. Check console for details.');
+            }
+        }).catch(function(error) {
+            console.error('Service worker not ready:', error);
+            alert('Error: Service worker not ready. Check console for details.');
+        });
     } else {
         console.error('CleverTap SDK not initialized');
         alert('Error: CleverTap SDK not loaded');
